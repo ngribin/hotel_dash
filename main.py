@@ -150,8 +150,6 @@ elif selected_tab == "Analytics":
     from pmdarima import auto_arima
 
 
-    # ... Your existing analytics code ...
-
     # Display results in the Streamlit app
     st.write("Number of Unique Clients for Each Sheet:")
     st.dataframe(unique_clients_df2)
