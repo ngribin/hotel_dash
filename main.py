@@ -242,7 +242,7 @@ elif selected_tab == "Forecast":
 
 
     # Load foot traffic data
-    data = pd.read_csv(r"C:\Users\theli\Downloads\foot_traffic.csv")
+    data = pd.read_csv("\foot_traffic.csv")
 
     results = adfuller(data['foot_traffic'])
     st.write('Statistic:', results[0])
