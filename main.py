@@ -55,7 +55,7 @@ elif selected_tab == "Analytics":
 
     # Define the Excel file path
     # excel_file = r'C:\Users\theli\Downloads\ОТЧЕТ 2020.xlsx'
-    excel_file = r'https://docs.google.com/spreadsheets/d/1sru54uiD-zl74rT-9ruGPlqaPJiRamkbgLK-IJZyHgo/edit?usp=sharing'
+    excel_file = 'ОТЧЕТ 2023г (1) (1).xlsx'
 
 
     # List of sheet names to process
