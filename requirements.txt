@@ -2,3 +2,5 @@ pandas
 matplotlib
 openpyxl
 streamlit
+pmdarima 
+numpy
