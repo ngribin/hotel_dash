@@ -33,7 +33,7 @@ data = pd.read_excel("hotels.xlsx")
 data = data.dropna()
 
 # Create a Streamlit app with multiple tabs
-st.set_page_config(layout="wide")
+#st.set_page_config(layout="wide")
 
 # Define function to create recommendations
 def create_recommendations(user_location, user_score, user_stars):
