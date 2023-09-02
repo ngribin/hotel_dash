@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from lightfm import LightFM
+from lightfm.data import Dataset
 from lightfm.evaluation import precision_at_k
 
 
