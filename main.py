@@ -24,7 +24,7 @@ def preprocess_data(df):
     return df
 
 # Create tabs
-tabs = ["Data", "Analytics", "Forecast", "Download"]
+tabs = ["Data", "Analytics", "Forecast", "Download", "Recommendations", "Other Tab"]
 selected_tab = st.sidebar.radio("Select Tab", tabs)
 
 
