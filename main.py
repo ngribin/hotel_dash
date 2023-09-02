@@ -36,12 +36,7 @@ data = data.dropna()
 st.set_page_config(layout="wide")
 
 # Define function to create recommendations
-def create_recommendations():
-    # Define user-specific parameters
-    user_location = 'crete'
-    user_score = 7
-    user_stars = 4
-
+def create_recommendations(user_location, user_score, user_stars):
     # Initialize a dataset object to handle interactions and mapping of users and items
     dataset = Dataset()
     dataset.fit(data['Location'], data['Title'])
@@ -75,18 +70,20 @@ def create_recommendations():
     for i, hotel in enumerate(filtered_top_hotels, 1):
         st.write(f"{i}. {hotel}")
 
-# Define other tabs or pages if needed
-def other_tab():
-    st.write("This is another tab.")
-
 # Create the Streamlit app with tabs
 tabs = ["Recommendations", "Other Tab"]
 selected_tab = st.sidebar.selectbox("Select a tab:", tabs)
 
 if selected_tab == "Recommendations":
-    create_recommendations()
+    st.sidebar.header("User Preferences")
+    user_location = st.sidebar.text_input("Location:", "crete")
+    user_score = st.sidebar.slider("Minimum Score:", 0, 10, 7)
+    user_stars = st.sidebar.slider("Minimum Stars:", 0, 5, 4)
+
+    create_recommendations(user_location, user_score, user_stars)
+
 elif selected_tab == "Other Tab":
-    other_tab()
+    st.write("This is another tab.")
 
 
 # Display content based on selected tab
