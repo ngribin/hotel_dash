@@ -70,9 +70,6 @@ def create_recommendations(user_location, user_score, user_stars):
     for i, hotel in enumerate(filtered_top_hotels, 1):
         st.write(f"{i}. {hotel}")
 
-# Create the Streamlit app with tabs
-tabs = ["Recommendations", "Other Tab"]
-selected_tab = st.sidebar.selectbox("Select a tab:", tabs)
 
 if selected_tab == "Recommendations":
     st.sidebar.header("User Preferences")
