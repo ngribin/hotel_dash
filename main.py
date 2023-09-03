@@ -24,34 +24,33 @@ def preprocess_data(df):
     df = df[1:]
     return df
 
-# Create tabs
+# Creating tabs
 tabs = ["Data", "Analytics", "Forecast", "Download", "Recommendations", "Other Tab"]
 selected_tab = st.sidebar.radio("Select Tab", tabs)
 
 
-# Load your hotel dataset or use a sample dataset (replace with your data)
+# Loading your hotel dataset 
 data = pd.read_excel("hotels.xlsx")
 data = data.dropna()
 
 # Create a Streamlit app with multiple tabs
 #st.set_page_config(layout="wide")
 
-# Define function to create recommendations
+# Function to create recommendations
 def create_recommendations(user_location, user_score, user_stars):
-    # Initialize a dataset object to handle interactions and mapping of users and items
     dataset = Dataset()
     dataset.fit(data['Location'], data['Title'])
 
-    # Build the interaction matrix
+    # The interaction matrix
     (interactions, _) = dataset.build_interactions(
         (user, item, 1.0) for user, item in zip(data['Location'], data['Title'])
     )
 
-    # Create and train the LightFM model
+    # Training the LightFM model
     model = LightFM(loss='warp')
     model.fit(interactions, epochs=30, num_threads=2)
 
-    # Map user parameters to the dataset's internal IDs
+    # Maping user parameters to the dataset's internal IDs
     user_id = dataset.mapping()[0][user_location]
 
     # Filter hotels based on user_score and user_stars
