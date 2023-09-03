@@ -74,7 +74,8 @@ def create_recommendations(user_location, user_score, user_stars):
 
 if selected_tab == "Recommendations":
     st.sidebar.header("User Preferences")
-    user_location = st.sidebar.text_input("Location:", "crete")
+    unique_locations = data['Location'].unique()
+    user_location = st.sidebar.selectbox("Location:", unique_locations)
     user_score = st.sidebar.slider("Minimum Score:", 0, 10, 7)
     user_stars = st.sidebar.slider("Minimum Stars:", 0, 5, 4)
 
