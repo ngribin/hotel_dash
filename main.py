@@ -61,10 +61,15 @@ def create_recommendations(user_location, user_score, user_stars):
     scores = model.predict(user_id, np.arange(n_items))
 
     # Get recommendations for the filtered hotels
+    # filtered_indices = [dataset.mapping()[2][hotel] for hotel in filtered_hotels['Title']]
+    # filtered_scores = scores[filtered_indices]
+    # filtered_hotel_indices = np.argsort(-filtered_scores)[:5]
+    # filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices]['Title']
+
     filtered_indices = [dataset.mapping()[2][hotel] for hotel in filtered_hotels['Title']]
     filtered_scores = scores[filtered_indices]
     filtered_hotel_indices = np.argsort(-filtered_scores)[:5]
-    filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices]['Title']
+    filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices][['Title', 'Url']]
 
     st.write(f"Top 5 hotel recommendations for user in '{user_location}' with a score of at least {user_score} and {user_stars} stars:")
     # for i, hotel in enumerate(filtered_top_hotels, 1):
