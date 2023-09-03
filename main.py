@@ -67,9 +67,14 @@ def create_recommendations(user_location, user_score, user_stars):
     filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices]['Title']
 
     st.write(f"Top 5 hotel recommendations for user in '{user_location}' with a score of at least {user_score} and {user_stars} stars:")
-    for i, hotel in enumerate(filtered_top_hotels, 1):
-        st.write(f"{i}. {hotel}")
-
+    # for i, hotel in enumerate(filtered_top_hotels, 1):
+    #     st.write(f"{i}. {hotel}")
+    for i, row in enumerate(filtered_top_hotels.iterrows(), 1):
+        index, hotel_data = row
+        title = hotel_data['Title']
+        url = hotel_data['Url']
+        st.write(f"{i}. {title}")
+        st.write(f"   URL: {url}")
 
 if selected_tab == "Recommendations":
     st.sidebar.header("User Preferences")
