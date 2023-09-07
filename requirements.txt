@@ -5,3 +5,4 @@ streamlit
 pmdarima 
 numpy
 lightFM
+plotly.express
