@@ -131,12 +131,35 @@ elif selected_tab == "Other Tab":
         st.write("Выберите одну или несколько колонок для отображения.")
 
     
+    # if selected_columns:
+    #     fig = px.line(merged_data, x='date', y=selected_columns, title="График темпов бронирования")  
+    #     st.plotly_chart(fig)
+    # else:
+    #     st.write("Выберите одну или несколько колонок для отображения.")
+    import plotly.graph_objs as go
+
+# Create a bar chart based on the selected columns
     if selected_columns:
-        fig = px.line(merged_data, x='date', y=selected_columns, title="График темпов бронирования")  
+        data = []
+        for col in selected_columns:
+            trace = go.Bar(
+                x=merged_data['date'],
+                y=merged_data[col],
+                name=col
+            )
+            data.append(trace)
+    
+        layout = go.Layout(
+            barmode='group',  # You can use 'group', 'stack', or 'overlay' for bar modes
+            title="График темпов бронирования"
+        )
+    
+        fig = go.Figure(data=data, layout=layout)
+    
+        # Display the bar chart using Streamlit
         st.plotly_chart(fig)
     else:
         st.write("Выберите одну или несколько колонок для отображения.")
-
 
 # Display content based on selected tab
 if selected_tab == "Data":
