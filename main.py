@@ -113,8 +113,8 @@ if selected_tab == 'Загрузка':
             data.append(trace)
     
         layout = go.Layout(
-            barmode='group',  # You can use 'group', 'stack', or 'overlay' for bar modes
-            title="График темпов бронирования"
+            barmode='group',  
+            title="График"
         )
     
         fig = go.Figure(data=data, layout=layout)
