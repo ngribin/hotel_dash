@@ -29,7 +29,7 @@ def load_data():
 data = load_data()
 
 st.sidebar.title("Меню")
-selected_tab = st.sidebar.radio("Вкладка:", ["Загрузка", "Категории", "Темпы продаж", "Рекомендации"])
+selected_tab = st.sidebar.radio("Вкладка:", ["Загрузка", "Категории", "Темпы продаж", "Прогноз", "Рекомендации"])
 # Display data using Streamlit
 
 
@@ -84,6 +84,46 @@ if selected_tab == 'Загрузка':
    
     merged_data = pd.merge(your_hotel_grouped, market_grouped, on='date', suffixes=('_your_hotel', '_market'))
     merged_data['percentage_difference'] = ((merged_data['bookings_your_hotel'] - merged_data['bookings_market']) / merged_data['bookings_market']) * 100
+
+    selected_columns = st.multiselect("Выберите колонки для отображения:", merged_data.columns)
+
+    # Отображение данных в зависимости от выбранных колонок
+    if selected_columns:
+        st.write(merged_data[selected_columns])
+    else:
+        st.write("Выберите одну или несколько колонок для отображения.")
+
+    
+    # if selected_columns:
+    #     fig = px.line(merged_data, x='date', y=selected_columns, title="График темпов бронирования")  
+    #     st.plotly_chart(fig)
+    # else:
+    #     st.write("Выберите одну или несколько колонок для отображения.")
+    import plotly.graph_objs as go
+
+# Create a bar chart based on the selected columns
+    if selected_columns:
+        data = []
+        for col in selected_columns:
+            trace = go.Bar(
+                x=merged_data['date'],
+                y=merged_data[col],
+                name=col
+            )
+            data.append(trace)
+    
+        layout = go.Layout(
+            barmode='group',  # You can use 'group', 'stack', or 'overlay' for bar modes
+            title="График темпов бронирования"
+        )
+    
+        fig = go.Figure(data=data, layout=layout)
+    
+        # Display the bar chart using Streamlit
+        st.plotly_chart(fig)
+    else:
+        st.write("Выберите одну или несколько колонок для отображения.")
+
     
 elif selected_tab == "Категории":
     st.subheader("Категории")
@@ -210,7 +250,7 @@ elif selected_tab == "Темпы продаж":
 
 elif selected_tab == "Прогноз":
     st.subheader("На стадии обучения :)")
-
+    
 
 elif selected_tab == 'Рекомендации':
 
