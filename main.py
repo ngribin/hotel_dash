@@ -360,12 +360,13 @@ elif selected_tab == "Прогноз":
     ax.set_xlim(920, 999)
     ax.set_xticks([936, 988])
     ax.set_xticklabels([2018, 2019])
-    fig.autofmt_xdate()
-    plt.tight_layout()
-
     small_graph_width = 600
     small_graph_height = 400
     fig.update_layout(width=small_graph_width, height=small_graph_height)
+    fig.autofmt_xdate()
+    plt.tight_layout()
+
+    
     st.pyplot(fig)
 
     mean_mse = mean_squared_error(test['foot_wear_diff'], test['pred_mean'])
