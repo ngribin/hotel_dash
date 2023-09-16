@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.io as pio
 import plotly.express as px
-import LightFM
+from lightfm import LightFM
 import numpy as np
 from lightfm.data import Dataset
 from lightfm.evaluation import precision_at_k
