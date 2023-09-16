@@ -190,7 +190,7 @@ elif selected_tab == 'Рекомендации':
     try:
         data = pd.read_excel("hotels.xlsx")
     except:
-        data = read_excel('https://raw.githubusercontent.com/ngribin/hotel_dash/main/hotels.xlsx')
+        data = pd.read_excel('https://raw.githubusercontent.com/ngribin/hotel_dash/main/hotels.xlsx')
     data = data.dropna()
 
 
