@@ -119,52 +119,8 @@ elif selected_tab == "Other Tab":
     merged_data = pd.merge(your_hotel_grouped, market_grouped, on='date', suffixes=('_your_hotel', '_market'))
     merged_data['percentage_difference'] = ((merged_data['bookings_your_hotel'] - merged_data['bookings_market']) / merged_data['bookings_market']) * 100
     
-    data = pd.read_csv('Radio_history.csv')
-    total_rooms = 32
-    
-    graph_type = st.sidebar.selectbox("Select Graph Type", ["Occupancy by Number of Rooms", "Occupancy by Percentage"])
-    date_range = st.sidebar.date_input("Select Date Range", [pd.to_datetime('2023-07-28'), pd.to_datetime('2023-07-30')])
+   
 
-    # Filter data based on date range
-    filtered_data = data[(data['arrDate'] >= date_range[0]) & (data['depDate'] <= date_range[1])]
-    
-    # Calculate total days and total occupancy days
-    total_days = (date_range[1] - date_range[0]).days + 1
-    total_occupancy_days = (filtered_data['depDate'] - filtered_data['arrDate']).sum().days
-    occupancy_percentage = (total_occupancy_days / (total_rooms * total_days)) * 100
-    
-    # Display occupancy percentage
-    st.sidebar.write(f"Occupancy from {date_range[0]} to {date_range[1]}: {occupancy_percentage:.2f}%")
-    
-    # Plot occupancy graph based on selection
-    st.header("Occupancy Graph")
-    
-    if graph_type == "Occupancy by Number of Rooms":
-        daily_occupancy = []
-        for date in pd.date_range(start=date_range[0], end=date_range[1]):
-            occupied_rooms = ((filtered_data['arrDate'] <= date) & (filtered_data['depDate'] >= date)).sum()
-            daily_occupancy.append(occupied_rooms)
-    
-        occupancy_df = pd.DataFrame({
-            'Date': pd.date_range(start=date_range[0], end=date_range[1]),
-            'Occupancy': daily_occupancy
-        })
-    
-        st.plotly_chart(px.line(occupancy_df, x='Date', y='Occupancy', title="Occupancy by Number of Rooms"))
-    
-    elif graph_type == "Occupancy by Percentage":
-        daily_occupancy = []
-        for date in pd.date_range(start=date_range[0], end=date_range[1]):
-            occupied_rooms = ((filtered_data['arrDate'] <= date) & (filtered_data['depDate'] >= date)).sum()
-            occupancy_percentage = (occupied_rooms / total_rooms) * 100
-            daily_occupancy.append(occupancy_percentage)
-    
-        occupancy_df = pd.DataFrame({
-            'Date': pd.date_range(start=date_range[0], end=date_range[1]),
-            'Occupancy': daily_occupancy
-        })
-    
-        st.plotly_chart(px.line(occupancy_df, x='Date', y='Occupancy', title="Occupancy by Percentage"))
 
     selected_columns = st.multiselect("Выберите колонки для отображения:", merged_data.columns)
 
