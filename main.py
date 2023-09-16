@@ -10,6 +10,60 @@ from lightfm.evaluation import precision_at_k
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
+
+data = pd.read_excel("hotels.xlsx")
+data = data.dropna()
+
+
+# Create a Streamlit app with multiple tabs
+# st.set_page_config(layout="wide")
+
+# Function to create recommendations
+def create_recommendations(user_location, user_score, user_stars):
+    dataset = Dataset()
+    dataset.fit(data['Location'], data['Title'])
+
+    # The interaction matrix
+    (interactions, _) = dataset.build_interactions(
+        (user, item, 1.0) for user, item in zip(data['Location'], data['Title'])
+    )
+
+    # Training the LightFM model
+    model = LightFM(loss='warp')
+    model.fit(interactions, epochs=30, num_threads=2)
+
+    # Maping user parameters to the dataset's internal IDs
+    user_id = dataset.mapping()[0][user_location]
+
+    # Filter hotels based on user_score and user_stars
+    filtered_hotels = data[(data['Score'] >= user_score) & (data['Stars'] >= user_stars)]
+
+    # Generate recommendations for the user based on the filtered hotels
+    n_users, n_items = interactions.shape
+    scores = model.predict(user_id, np.arange(n_items))
+
+    # Get recommendations for the filtered hotels
+    # filtered_indices = [dataset.mapping()[2][hotel] for hotel in filtered_hotels['Title']]
+    # filtered_scores = scores[filtered_indices]
+    # filtered_hotel_indices = np.argsort(-filtered_scores)[:5]
+    # filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices]['Title']
+
+    filtered_indices = [dataset.mapping()[2][hotel] for hotel in filtered_hotels['Title']]
+    filtered_scores = scores[filtered_indices]
+    filtered_hotel_indices = np.argsort(-filtered_scores)[:5]
+    filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices][['Title', 'Url']]
+
+    st.write(
+        f"Top 5 hotel recommendations for user in '{user_location}' with a score of at least {user_score} and {user_stars} stars:")
+    # for i, hotel in enumerate(filtered_top_hotels, 1):
+    #     st.write(f"{i}. {hotel}")
+    for i, row in enumerate(filtered_top_hotels.iterrows(), 1):
+        index, hotel_data = row
+        title = hotel_data['Title']
+        url = hotel_data['Url']
+        st.write(f"{i}. {title}")
+        st.write(f"   URL: {url}")
+
 # Add Streamlit title
 st.title("Отель - 32 номера")
 
@@ -187,66 +241,10 @@ elif selected_tab == "Прогноз":
 
 elif selected_tab == 'Рекомендации':
     st.subheader("Рекомендации")
-    try:
-        data = pd.read_excel("hotels.xlsx")
-    except:
-        data = pd.read_excel('https://raw.githubusercontent.com/ngribin/hotel_dash/main/hotels.xlsx')
-    data = data.dropna()
+    st.sidebar.header("User Preferences")
+    unique_locations = data['Location'].unique()
+    user_location = st.sidebar.selectbox("Location:", unique_locations)
+    user_score = st.sidebar.slider("Minimum Score:", 0, 10, 7)
+    user_stars = st.sidebar.slider("Minimum Stars:", 0, 5, 4)
 
-
-    # Create a Streamlit app with multiple tabs
-    # st.set_page_config(layout="wide")
-
-    # Function to create recommendations
-    def create_recommendations(user_location, user_score, user_stars):
-        dataset = Dataset()
-        dataset.fit(data['Location'], data['Title'])
-
-        # The interaction matrix
-        (interactions, _) = dataset.build_interactions(
-            (user, item, 1.0) for user, item in zip(data['Location'], data['Title'])
-        )
-
-        # Training the LightFM model
-        model = LightFM(loss='warp')
-        model.fit(interactions, epochs=30, num_threads=2)
-
-        # Maping user parameters to the dataset's internal IDs
-        user_id = dataset.mapping()[0][user_location]
-
-        # Filter hotels based on user_score and user_stars
-        filtered_hotels = data[(data['Score'] >= user_score) & (data['Stars'] >= user_stars)]
-
-        # Generate recommendations for the user based on the filtered hotels
-        n_users, n_items = interactions.shape
-        scores = model.predict(user_id, np.arange(n_items))
-
-        # Get recommendations for the filtered hotels
-        # filtered_indices = [dataset.mapping()[2][hotel] for hotel in filtered_hotels['Title']]
-        # filtered_scores = scores[filtered_indices]
-        # filtered_hotel_indices = np.argsort(-filtered_scores)[:5]
-        # filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices]['Title']
-
-        filtered_indices = [dataset.mapping()[2][hotel] for hotel in filtered_hotels['Title']]
-        filtered_scores = scores[filtered_indices]
-        filtered_hotel_indices = np.argsort(-filtered_scores)[:5]
-        filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices][['Title', 'Url']]
-
-        st.write(
-            f"Top 5 hotel recommendations for user in '{user_location}' with a score of at least {user_score} and {user_stars} stars:")
-        # for i, hotel in enumerate(filtered_top_hotels, 1):
-        #     st.write(f"{i}. {hotel}")
-        for i, row in enumerate(filtered_top_hotels.iterrows(), 1):
-            index, hotel_data = row
-            title = hotel_data['Title']
-            url = hotel_data['Url']
-            st.write(f"{i}. {title}")
-            st.write(f"   URL: {url}")
-
-        st.sidebar.header("User Preferences")
-        unique_locations = data['Location'].unique()
-        user_location = st.sidebar.selectbox("Location:", unique_locations)
-        user_score = st.sidebar.slider("Minimum Score:", 0, 10, 7)
-        user_stars = st.sidebar.slider("Minimum Stars:", 0, 5, 4)
-
-        create_recommendations(user_location, user_score, user_stars)
+    create_recommendations(user_location, user_score, user_stars)
