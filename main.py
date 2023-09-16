@@ -11,9 +11,6 @@ st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
 
-
-
-# Add Streamlit title
 st.title("Отель - 32 номера")
 
 total_rooms = 32
@@ -55,7 +52,6 @@ if selected_tab == 'Загрузка':
         'Occupancy': occupied_rooms
     })
 
-    # Display occupancy chart
     st.write("### Номерной фонд 32 номера")
     st.plotly_chart(px.line(overlap_df, x='Date', y='Occupancy', title="Загрузка - номера").update_layout(
         xaxis_title="Дата", yaxis_title="Загрузка"
@@ -173,17 +169,16 @@ elif selected_tab == "Категории":
 elif selected_tab == "Темпы продаж":
     st.subheader("Темпы продаж на 3 дня")
 
-
     st.sidebar.subheader("Выбрать даты")
     start_date = st.sidebar.date_input("Start Date (Для 3 дней)", pd.Timestamp('2023-07-28'),
                                        key="start_date_tempo")
     end_date = st.sidebar.date_input("End Date (Для 3 дней)", pd.Timestamp('2023-07-30'), key="end_date_tempo")
 
-    # Filter data based on selected dates (convert string to datetime)
+
     start_date = pd.to_datetime(start_date)
     end_date = pd.to_datetime(end_date)
 
-    # Ensure that date columns are Timestamp objects
+   
     data['arrDate'] = pd.to_datetime(data['arrDate'])
     data['depDate'] = pd.to_datetime(data['depDate'])
 
@@ -211,17 +206,15 @@ elif selected_tab == "Темпы продаж":
                                                                                                    yaxis_title="%"),
         use_container_width=True)
     st.write(d3_booking_pace_df.T)
-    # Display the booking pace table
     st.subheader("Темпы продаж на 14")
 
     start_date = st.date_input("Start Date", pd.Timestamp('2023-07-28'))
     end_date = st.date_input("End Date", pd.Timestamp('2023-08-10'))
 
-    # Filter data based on selected dates (convert string to datetime)
+   
     start_date = pd.to_datetime(start_date)
     end_date = pd.to_datetime(end_date)
 
-    # Ensure that date columns are Timestamp objects
     data['arrDate'] = pd.to_datetime(data['arrDate'])
     data['depDate'] = pd.to_datetime(data['depDate'])
 
@@ -250,7 +243,7 @@ elif selected_tab == "Темпы продаж":
 
 elif selected_tab == "Прогноз":
     st.subheader("На стадии обучения :)")
-    st.title("Forecast Tab")
+    st.title("Forecast")
     st.write("This is the Forecast tab content.")
 
     import streamlit as st
@@ -387,28 +380,21 @@ elif selected_tab == 'Рекомендации':
     data = pd.read_excel("hotels.xlsx")
     data = data.dropna()
 
-
-# Function to create recommendations
     def create_recommendations(user_location, user_score, user_stars):
         dataset = Dataset()
         dataset.fit(data['Location'], data['Title'])
     
-        # The interaction matrix
         (interactions, _) = dataset.build_interactions(
             (user, item, 1.0) for user, item in zip(data['Location'], data['Title'])
         )
     
-        # Training the LightFM model
         model = LightFM(loss='warp')
         model.fit(interactions, epochs=30, num_threads=2)
     
-        # Maping user parameters to the dataset's internal IDs
         user_id = dataset.mapping()[0][user_location]
     
-        # Filter hotels based on user_score and user_stars
         filtered_hotels = data[(data['Score'] >= user_score) & (data['Stars'] >= user_stars)]
     
-        # Generate recommendations for the user based on the filtered hotels
         n_users, n_items = interactions.shape
         scores = model.predict(user_id, np.arange(n_items))
     
