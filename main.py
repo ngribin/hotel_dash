@@ -363,6 +363,9 @@ elif selected_tab == "Прогноз":
     fig.autofmt_xdate()
     plt.tight_layout()
 
+    small_graph_width = 600
+    small_graph_height = 400
+    fig.update_layout(width=small_graph_width, height=small_graph_height)
     st.pyplot(fig)
 
     mean_mse = mean_squared_error(test['foot_wear_diff'], test['pred_mean'])
