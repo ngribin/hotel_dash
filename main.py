@@ -112,6 +112,29 @@ if selected_tab == 'Загрузка':
         xaxis_title="Дата", yaxis_title="Загрузка"
     ))
 
+    your_hotel_data = pd.DataFrame({
+        'date': ['2023-08-01', '2023-08-02', '2023-08-03', '2023-08-04', '2023-08-05'],
+        'bookings': [10, 15, 8, 12, 18]
+    })
+
+    st.write("Разница")
+    # Данные о рынке гостиничных бронирований (пример)
+    market_data = pd.DataFrame({
+        'date': ['2023-08-01', '2023-08-02', '2023-08-03', '2023-08-04', '2023-08-05'],
+        'bookings': [50, 60, 55, 58, 62]  # Пример данных о рынке
+    })
+    
+    # Преобразуем столбец с датами в формат datetime
+    your_hotel_data['date'] = pd.to_datetime(your_hotel_data['date'])
+    market_data['date'] = pd.to_datetime(market_data['date'])
+    
+    # Группируем данные по дням и вычисляем сумму бронирований
+    your_hotel_grouped = your_hotel_data.groupby('date')['bookings'].sum().reset_index()
+    market_grouped = market_data.groupby('date')['bookings'].sum().reset_index()
+    
+   
+    merged_data = pd.merge(your_hotel_grouped, market_grouped, on='date', suffixes=('_your_hotel', '_market'))
+    merged_data['percentage_difference'] = ((merged_data['bookings_your_hotel'] - merged_data['bookings_market']) / merged_data['bookings_market']) * 100
 elif selected_tab == "Категории":
     st.subheader("Категории")
 
