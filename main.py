@@ -406,7 +406,7 @@ elif selected_tab == 'Рекомендации':
         filtered_top_hotels = filtered_hotels.iloc[filtered_hotel_indices][['Title', 'Url']]
     
         st.write(
-            f"Топ 5 для гостя в '{user_location}' рейтингом отзывов {user_score} и {user_stars} звезды:")
+            f"Топ 5 рекомендаций отелей для гостя в Греции -'{user_location}' с рейтингом отзывов {user_score} и {user_stars} звезды:")
         # for i, hotel in enumerate(filtered_top_hotels, 1):
         #     st.write(f"{i}. {hotel}")
         for i, row in enumerate(filtered_top_hotels.iterrows(), 1):
