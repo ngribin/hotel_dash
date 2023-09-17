@@ -84,7 +84,7 @@ if selected_tab == 'Загрузка':
     if selected_columns:
         st.write(merged_data[selected_columns])
     else:
-        #st.write("Выберите одну или несколько колонок для отображения.")
+        st.write("")
 
     
     # if selected_columns:
@@ -94,7 +94,6 @@ if selected_tab == 'Загрузка':
     #     st.write("Выберите одну или несколько колонок для отображения.")
     import plotly.graph_objs as go
 
-# Create a bar chart based on the selected columns
     if selected_columns:
         data = []
         for col in selected_columns:
@@ -112,10 +111,9 @@ if selected_tab == 'Загрузка':
     
         fig = go.Figure(data=data, layout=layout)
     
-        # Display the bar chart using Streamlit
         st.plotly_chart(fig)
     else:
-        #st.write("Выберите одну или несколько колонок для отображения.")
+        st.write("")
 
     
 elif selected_tab == "Категории":
