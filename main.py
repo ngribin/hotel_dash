@@ -27,9 +27,6 @@ data = load_data()
 
 st.sidebar.title("Меню")
 selected_tab = st.sidebar.radio("Вкладка:", ["Загрузка", "Категории", "Темпы продаж", "Прогноз", "Рекомендации"])
-# Display data using Streamlit
-
-
 
 if selected_tab == 'Загрузка':
     st.subheader('Загрузка')
@@ -63,7 +60,7 @@ if selected_tab == 'Загрузка':
     })
 
     st.write("Разница")
-    # Данные о рынке гостиничных бронирований (пример)
+    # Данные о рынке гостиничных бронирований 
     market_data = pd.DataFrame({
         'date': ['2023-08-01', '2023-08-02', '2023-08-03', '2023-08-04', '2023-08-05'],
         'bookings': [50, 60, 55, 58, 62]  # Пример данных о рынке
@@ -87,7 +84,7 @@ if selected_tab == 'Загрузка':
     if selected_columns:
         st.write(merged_data[selected_columns])
     else:
-        st.write("Выберите одну или несколько колонок для отображения.")
+        #st.write("Выберите одну или несколько колонок для отображения.")
 
     
     # if selected_columns:
@@ -118,7 +115,7 @@ if selected_tab == 'Загрузка':
         # Display the bar chart using Streamlit
         st.plotly_chart(fig)
     else:
-        st.write("Выберите одну или несколько колонок для отображения.")
+        #st.write("Выберите одну или несколько колонок для отображения.")
 
     
 elif selected_tab == "Категории":
