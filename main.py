@@ -183,7 +183,7 @@ elif selected_tab == "Темпы продаж":
 
     # проходимся по каждому дню
     for date in pd.date_range(start=min(period_data['arrDate']), end=max(period_data['arrDate'])):
-        bookings_on_date = period_data[(period_data['arrDate'] <= date) & (period_data['depDate'] >= date)]
+        bookings_on_date = period_data[(period_data['arrDate'] <= date) & (period_data['arrDate'] >= date)]
         total_bookings = len(bookings_on_date)
         booking_pace_pct = (total_bookings / total_rooms) * 100
         booking_totals[date] = {'Всего бронирований': int(total_bookings), 'Темп продаж': round(booking_pace_pct, 2)}
@@ -218,7 +218,7 @@ elif selected_tab == "Темпы продаж":
 
     # проходимся по каждому дню
     for date in pd.date_range(start=min(period_data['arrDate']), end=max(period_data['arrDate'])):
-        bookings_on_date = period_data[(period_data['arrDate'] <= date) & (period_data['depDate'] >= date)]
+        bookings_on_date = period_data[(period_data['arrDate'] <= date) & (period_data['arrDate'] >= date)]
         total_bookings = len(bookings_on_date)
         booking_pace_pct = (total_bookings / total_rooms) * 100
         booking_totals[date] = {'Всего бронирований': int(total_bookings), 'Темп продаж': round(booking_pace_pct, 2)}
