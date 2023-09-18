@@ -39,7 +39,7 @@ if selected_tab == 'Загрузка':
     occupied_rooms = []
 
     for date in pd.date_range(start=min(data['arrDate']), end=max(data['depDate'])):
-        overlapping_bookings = ((data['arrDate'] < date) & (data['depDate'] > date))
+        overlapping_bookings = ((data['arrDate'] <= date) & (date < data['depDate']))
         occupied_rooms_count = overlapping_bookings.sum()
         occupied_rooms.append(occupied_rooms_count)
 
@@ -50,7 +50,7 @@ if selected_tab == 'Загрузка':
     })
 
     st.write("### Номерной фонд 32 номера")
-    st.plotly_chart(px.line(overlap_df, x='Date', y='Occupancy', title="Загрузка - номера").update_layout(
+    st.plotly_chart(px.bar(overlap_df, x='Date', y='Occupancy', title="Загрузка - номера").update_layout(
         xaxis_title="Дата", yaxis_title="Загрузка"
     ))
 
