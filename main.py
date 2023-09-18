@@ -59,61 +59,61 @@ if selected_tab == 'Загрузка':
         'bookings': [10, 15, 8, 12, 18]
     })
 
-    st.write("Разница")
-    # Данные о рынке гостиничных бронирований 
-    market_data = pd.DataFrame({
-        'date': ['2023-08-01', '2023-08-02', '2023-08-03', '2023-08-04', '2023-08-05'],
-        'bookings': [50, 60, 55, 58, 62]  # Пример данных о рынке
-    })
+    # st.write("Разница")
+    # # Данные о рынке гостиничных бронирований 
+    # market_data = pd.DataFrame({
+    #     'date': ['2023-08-01', '2023-08-02', '2023-08-03', '2023-08-04', '2023-08-05'],
+    #     'bookings': [50, 60, 55, 58, 62]  # Пример данных о рынке
+    # })
     
-    # Преобразуем столбец с датами в формат datetime
-    your_hotel_data['date'] = pd.to_datetime(your_hotel_data['date'])
-    market_data['date'] = pd.to_datetime(market_data['date'])
+    # # Преобразуем столбец с датами в формат datetime
+    # your_hotel_data['date'] = pd.to_datetime(your_hotel_data['date'])
+    # market_data['date'] = pd.to_datetime(market_data['date'])
     
-    # Группируем данные по дням и вычисляем сумму бронирований
-    your_hotel_grouped = your_hotel_data.groupby('date')['bookings'].sum().reset_index()
-    market_grouped = market_data.groupby('date')['bookings'].sum().reset_index()
+    # # Группируем данные по дням и вычисляем сумму бронирований
+    # your_hotel_grouped = your_hotel_data.groupby('date')['bookings'].sum().reset_index()
+    # market_grouped = market_data.groupby('date')['bookings'].sum().reset_index()
     
    
-    merged_data = pd.merge(your_hotel_grouped, market_grouped, on='date', suffixes=('_your_hotel', '_market'))
-    merged_data['percentage_difference'] = ((merged_data['bookings_your_hotel'] - merged_data['bookings_market']) / merged_data['bookings_market']) * 100
+    # merged_data = pd.merge(your_hotel_grouped, market_grouped, on='date', suffixes=('_your_hotel', '_market'))
+    # merged_data['percentage_difference'] = ((merged_data['bookings_your_hotel'] - merged_data['bookings_market']) / merged_data['bookings_market']) * 100
 
-    selected_columns = st.multiselect("Выберите колонки для отображения:", merged_data.columns)
+    # selected_columns = st.multiselect("Выберите колонки для отображения:", merged_data.columns)
 
-    # Отображение данных в зависимости от выбранных колонок
-    if selected_columns:
-        st.write(merged_data[selected_columns])
-    else:
-        st.write("")
+    # # Отображение данных в зависимости от выбранных колонок
+    # if selected_columns:
+    #     st.write(merged_data[selected_columns])
+    # else:
+    #     st.write("")
 
     
+    # # if selected_columns:
+    # #     fig = px.line(merged_data, x='date', y=selected_columns, title="График темпов бронирования")  
+    # #     st.plotly_chart(fig)
+    # # else:
+    # #     st.write("Выберите одну или несколько колонок для отображения.")
+    # import plotly.graph_objs as go
+
     # if selected_columns:
-    #     fig = px.line(merged_data, x='date', y=selected_columns, title="График темпов бронирования")  
+    #     data = []
+    #     for col in selected_columns:
+    #         trace = go.Bar(
+    #             x=merged_data['date'],
+    #             y=merged_data[col],
+    #             name=col
+    #         )
+    #         data.append(trace)
+    
+    #     layout = go.Layout(
+    #         barmode='group',  
+    #         title="График"
+    #     )
+    
+    #     fig = go.Figure(data=data, layout=layout)
+    
     #     st.plotly_chart(fig)
     # else:
-    #     st.write("Выберите одну или несколько колонок для отображения.")
-    import plotly.graph_objs as go
-
-    if selected_columns:
-        data = []
-        for col in selected_columns:
-            trace = go.Bar(
-                x=merged_data['date'],
-                y=merged_data[col],
-                name=col
-            )
-            data.append(trace)
-    
-        layout = go.Layout(
-            barmode='group',  
-            title="График"
-        )
-    
-        fig = go.Figure(data=data, layout=layout)
-    
-        st.plotly_chart(fig)
-    else:
-        st.write("")
+    #     st.write("")
 
     
 elif selected_tab == "Категории":
